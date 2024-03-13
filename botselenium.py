@@ -1,18 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-#from selenium.webdriver.chrome.options import Options
+
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
-#from selenium.webdriver.chrome.service import Service
-#from webdriver_manager.chrome import ChromeDriverManager
 
-#import time
 import os
 import requests
 import json
-#import subprocess
+import time
 import argparse
 import base64
 from datetime import datetime
@@ -27,60 +24,39 @@ args = parser.parse_args()
 
 class WebScrapingSRI:
     def __init__(self,RUC,CI_,password):
-        #Configuracion de chrome
+        
         self.RUC = RUC
         self.password = password
         self.CI_ = CI_
         self.url_webhook = "https://app.sivo.ec/v5/webhooktxt"
 
         self.LoginPageConnection = False
-        
-        #Login
-        '''
         while(self.LoginPageConnection  == False):
             try:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
             except:
+                print("Error: Esperar 5 minutos")
                 self.browser.quit()
-                print("Error en la pagina: Esperar 3 minutos")
-              
-                time.sleep(5)
-                
-                #180 = 3minutos
-                #300 = 5 minutos
+                time.sleep(300)
                 pass
         self.browser.quit()
-        exit()
-
-    '''
+        exit()  
     def DriverSelected(self):
-    
-        #1
         options = Options()
         options.page_load_strategy = 'eager'
         options.add_argument('--headless=new')
         options.add_argument('--disable-gpu')
         options.add_argument('user-agent=Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')
-        #options.add_argument('--no-sandbox')
         self.browser = webdriver.Chrome(options=options)
     def ConnectionPage(self):
-       
-        #Condicional de conexion a pagina
         try: 
             self.browser.get('https://srienlinea.sri.gob.ec/sri-en-linea/inicio/NAT') 
-
         except:
-            pass
-           
+            pass   
     def LoginPage(self):
-        #LOG
-        print("Iniciando sesion")
-        #Cargando variables de entorno
         self.browser.implicitly_wait(30)
-        #Ingresar al LOGIN
-        
         FacturasElectronicasElement = self.browser.find_elements(By.CLASS_NAME,"ui-panelmenu-header-link")
         FacturasElectronicasElement[4].click()
 
@@ -91,9 +67,6 @@ class WebScrapingSRI:
         CI = self.browser.find_element(By.ID,'ciAdicional')
         PASSWORD = self.browser.find_element(By.ID,'password')
 
-
-        #Rellenar formulario
-
         USER.send_keys(self.RUC)
         if self.CI_ != "0":
             CI.send_keys(self.CI_)
@@ -101,24 +74,18 @@ class WebScrapingSRI:
             pass
         PASSWORD.send_keys(self.password)
 
-        #Enviar formulario
         btnSubmit = self.browser.find_element(By.ID,"kc-login")
         btnSubmit.submit()
-
-        #Condicional de credenciales correctas
         try: 
             AlertError = WebDriverWait(self.browser,10).until(EC.presence_of_element_located((By.CLASS_NAME,"alert-error")))
             if(AlertError):
-                print("log/dev: Error de sesion: Datos incorrectos")
                 self.browser.quit()
                 exit()
             else:
                 pass
         except:
-            print("Sesion iniciada")
             self.DownloaFile()    
     def DownloaFile(self):
-        print("Esperando descarga de archivo..")
         Issue_period_day = self.browser.find_element(By.ID, 'frmPrincipal:dia')
         select_day = Select(Issue_period_day)
         select_day.select_by_value("0")
@@ -140,41 +107,29 @@ class WebScrapingSRI:
         wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
         wait.click()
         self.LoginPageConnection = True
-        print("Arhivo descargado")
         self.MoveFile()
     def MoveFile(self):
         date = datetime.now()
         nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
         nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
-        
-        #RENAME
-        #os.rename(nombre_anterior,nombre_actual)
+        try:
+            os.rename(nombre_anterior,nombre_actual)
+        except:
+            pass
         self.ConvertBased64_Send(nombre_actual)
-        #subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosElectronicos"],check=False)
+        os.remove(nombre_actual) 
     def ConvertBased64_Send(self,PathFile):
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
         text_based = base64.b64encode(texto)
-        
         data = {
             "archivo": text_based.decode()
         }
-        
         response = requests.post(self.url_webhook, data=json.dumps(data), headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
-            print("Factura enviada correctamente")
-            print(response.text)
+          pass
         else:
-            print("Error en el envio")
+           pass
         
 
-WebScrapingSRI(args.RUC,args.CI,args.CLAVE).MoveFile()
-
-
-#WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
-
-
-
-#WebScrapingSRI("1791972066001","Walejandro86*","1720802394")
-#WebScrapingSRI("1720802394001","Walejandro86*")
-
+WebScrapingSRI(args.RUC,args.CI,args.CLAVE)
