@@ -48,8 +48,8 @@ class WebScrapingSRI:
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
-
-        self.browser = webdriver.Firefox()
+        firefox_binary = '/usr/local/bin/firefox'  # Ruta al ejecutable de Firefox
+        self.browser = webdriver.Firefox(firefox_binary=firefox_binary)
 
         #self.browser =  webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         #self.browser = webdriver.Chrome(executable_path="/home/jostinorbe/google-chrome-stable_current_amd64.deb")
