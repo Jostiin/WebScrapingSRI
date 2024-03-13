@@ -36,10 +36,10 @@ class WebScrapingSRI:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except Exception as e:
+            except:
                 self.browser.quit()
                 print("Error en la pagina: Esperar 3 minutos")
-                print(e)
+             
                 time.sleep(60)
                 
                 #180 = 3minutos
