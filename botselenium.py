@@ -11,6 +11,7 @@ import time
 import os
 import subprocess
 import argparse
+import base64
 from datetime import datetime
 
 parser = argparse.ArgumentParser(description="Scraping SRI")
@@ -31,15 +32,16 @@ class WebScrapingSRI:
         self.LoginPageConnection = False
         
         #Login
+        '''
         while(self.LoginPageConnection  == False):
             try:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except Exception as e:
+            except:
                 self.browser.quit()
                 print("Error en la pagina: Esperar 3 minutos")
-                print(e)
+              
                 time.sleep(5)
                 
                 #180 = 3minutos
@@ -47,6 +49,8 @@ class WebScrapingSRI:
                 pass
         self.browser.quit()
         exit()
+
+    '''
     def DriverSelected(self):
     
         #1
@@ -54,7 +58,7 @@ class WebScrapingSRI:
         options.page_load_strategy = 'eager'
         options.add_argument('--headless=new')
         options.add_argument('--disable-gpu')
-        options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
+        options.add_argument('user-agent=Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')
         #options.add_argument('--no-sandbox')
         self.browser = webdriver.Chrome(options=options)
     def ConnectionPage(self):
@@ -64,9 +68,8 @@ class WebScrapingSRI:
             self.browser.get('https://srienlinea.sri.gob.ec/sri-en-linea/inicio/NAT') 
 
         except:
-            print("Error en la conexion")
-            self.browser.quit()
-            exit()
+            pass
+           
     def LoginPage(self):
         #LOG
         print("Iniciando sesion")
@@ -136,27 +139,27 @@ class WebScrapingSRI:
         print("Arhivo descargado")
         self.MoveFile()
     def MoveFile(self):
-        pass
-        #date = datetime.now()
-        #nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
-        #nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        date = datetime.now()
+        nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
+        nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        self.ConvertBased64(nombre_anterior,nombre_actual)
         #RENAME
         #os.rename(nombre_anterior,nombre_actual)
         #subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosElectronicos"],check=False)
+    def ConvertBased64(self,PathFile,PathFileNew):
+        with open(PathFile,'rb') as archivo:
+            texto = archivo.read()
+        text_based = base64.b64encode(texto)
+        with open(PathFileNew,'wb') as archivo_64:
+            archivo_64.write(text_based)
 
-WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
+WebScrapingSRI.MoveFile()
+
+
+#WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
+
+
 
 #WebScrapingSRI("1791972066001","Walejandro86*","1720802394")
-  
-
-
-
 #WebScrapingSRI("1720802394001","Walejandro86*")
 
-
-
-
-
-#1720802394001 # 1791972066001
-#1720802394
-#Walejandro86*
