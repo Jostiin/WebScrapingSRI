@@ -29,18 +29,18 @@ class WebScrapingSRI:
         self.CI_ = CI_
 
         self.LoginPageConnection = False
-       
+        
         #Login
         while(self.LoginPageConnection  == False):
             try:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except:
+            except Exception as e:
                 self.browser.quit()
                 print("Error en la pagina: Esperar 3 minutos")
-             
-                time.sleep(60)
+                print(e)
+                time.sleep(5)
                 
                 #180 = 3minutos
                 #300 = 5 minutos
@@ -135,12 +135,13 @@ class WebScrapingSRI:
         print("Arhivo descargado")
         self.MoveFile()
     def MoveFile(self):
-        date = datetime.now()
-        nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
-        nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        pass
+        #date = datetime.now()
+        #nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
+        #nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
         #RENAME
-        os.rename(nombre_anterior,nombre_actual)
-        subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosElectronicos"],check=False)
+        #os.rename(nombre_anterior,nombre_actual)
+        #subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosElectronicos"],check=False)
 
 WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
 
