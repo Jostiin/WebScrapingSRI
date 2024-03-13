@@ -120,9 +120,9 @@ class WebScrapingSRI:
             else:
                 pass
         except:
-            pass
+            self.DownloaFile()
 
-        self.DownloaFile()
+        
     def DownloaFile(self):
         print("Descargando..")
         Issue_period_day = self.browser.find_element(By.ID, 'frmPrincipal:dia')
