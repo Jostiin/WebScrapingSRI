@@ -44,12 +44,12 @@ class WebScrapingSRI:
     def DriverSelected(self):
     
         #try:
-        #chrome_options = Options()
-        #chrome_options.headless = True 
-        #chrome_options.port = 4444  
+        chrome_options = Options()
+        chrome_options.headless = True 
+        chrome_options.port = 4444  
         
         #chrome_options.add_argument("--no-sandbox")
-        #chrome_options.add_argument("--headless=new")
+        chrome_options.add_argument("--headless=new")
         #chrome_options.add_argument("--disable-dev-shm-usage")
 
         #chrome_options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36')
@@ -59,7 +59,7 @@ class WebScrapingSRI:
         #options.add_argument('--headless=new')
         #options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36')
         #self.browser=webdriver.Firefox(service=service, options=options)
-        self.browser = webdriver.Firefox(executable_path='/usr/local/bin/geckodriver')
+        self.browser = webdriver.Firefox(options = chrome_options,executable_path='/usr/local/bin/geckodriver')
         #except:
 
         #    firefox_options = Options()
