@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+#from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -45,6 +45,7 @@ class WebScrapingSRI:
     
         #try:
         chrome_options = Options()
+        chrome_options.headless = True 
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
@@ -52,7 +53,7 @@ class WebScrapingSRI:
         #self.browser =  webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         #self.browser = webdriver.Chrome(executable_path="/home/jostinorbe/google-chrome-stable_current_amd64.deb")
         #self.browser = webdriver.ChromeService(executable_path="/home/jostinorbe/google-chrome-stable_current_amd64.deb")
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Firefox(options = chrome_options)
         #except:
 
         #    firefox_options = Options()
