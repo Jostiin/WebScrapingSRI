@@ -39,7 +39,7 @@ class WebScrapingSRI:
             except:
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
-                time.sleep(300)
+                time.sleep(5)
                 pass
         self.browser.quit()
         exit()  
