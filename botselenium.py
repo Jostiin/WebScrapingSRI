@@ -54,6 +54,7 @@ class WebScrapingSRI:
         options.page_load_strategy = 'eager'
         options.add_argument('--headless=new')
         options.add_argument('--disable-gpu')
+        options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
         #options.add_argument('--no-sandbox')
         self.browser = webdriver.Chrome(options=options)
     def ConnectionPage(self):
