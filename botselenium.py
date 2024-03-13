@@ -148,7 +148,7 @@ class WebScrapingSRI:
         nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
         
         #RENAME
-        os.rename(nombre_anterior,nombre_actual)
+        #os.rename(nombre_anterior,nombre_actual)
         self.ConvertBased64_Send(nombre_actual)
         #subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosElectronicos"],check=False)
     def ConvertBased64_Send(self,PathFile):
