@@ -5,12 +5,13 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+#from selenium.webdriver.chrome.service import Service
+#from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
 import subprocess
 import argparse
+from datetime import datetime
 
 parser = argparse.ArgumentParser(description="Scraping SRI")
 
@@ -28,18 +29,16 @@ class WebScrapingSRI:
         self.CI_ = CI_
 
         self.LoginPageConnection = False
-        #--self.DriverSelected()
-        self.MoveFile()
+        self.DriverSelected()
         #Login
-        #while(self.LoginPageConnection  == False):
-        #    try:
-        #        self.ConnectionPage()
-        #        self.LoginPage()
-        #    except:
-        #        print("Error en la pagina: Esperar 3 minutos")
-                #self.browser.close()
-        #        time.sleep(180)
-        #        pass
+        while(self.LoginPageConnection  == False):
+            try:
+                self.ConnectionPage()
+                self.LoginPage()
+            except:
+                print("Error en la pagina: Esperar 3 minutos")
+                time.sleep(180)
+                pass
         self.browser.close()
         exit()
     def DriverSelected(self):
@@ -128,9 +127,14 @@ class WebScrapingSRI:
         wait.click()
         self.LoginPageConnection = True
         print("Arhivo descargado")
-        #self.MoveFile()
+        self.MoveFile()
     def MoveFile(self):
-        subprocess.run(["mv",os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt",os.getcwd()+"/"],check=False)
+        date = datetime.now()
+        nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
+        nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d/%m/%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        #RENAME
+        os.rename(nombre_anterior,nombre_actual)
+        subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosEletronicos"],check=False)
 
 WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
 
