@@ -9,6 +9,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
+import subprocess
 import argparse
 
 parser = argparse.ArgumentParser(description="Scraping SRI")
@@ -27,17 +28,18 @@ class WebScrapingSRI:
         self.CI_ = CI_
 
         self.LoginPageConnection = False
-        self.DriverSelected()
+        #--self.DriverSelected()
+        self.MoveFile()
         #Login
-        while(self.LoginPageConnection  == False):
-            try:
-                self.ConnectionPage()
-                self.LoginPage()
-            except:
-                print("Error en la pagina: Esperar 3 minutos")
+        #while(self.LoginPageConnection  == False):
+        #    try:
+        #        self.ConnectionPage()
+        #        self.LoginPage()
+        #    except:
+        #        print("Error en la pagina: Esperar 3 minutos")
                 #self.browser.close()
-                time.sleep(180)
-                pass
+        #        time.sleep(180)
+        #        pass
         self.browser.close()
         exit()
     def DriverSelected(self):
@@ -49,7 +51,6 @@ class WebScrapingSRI:
         options.add_argument('--disable-gpu')
         #options.add_argument('--no-sandbox')
         self.browser = webdriver.Chrome(options=options)
-
     def ConnectionPage(self):
        
         #Condicional de conexion a pagina
@@ -101,11 +102,10 @@ class WebScrapingSRI:
             else:
                 pass
         except:
-            self.DownloaFile()
-
-        
+            print("Sesion iniciada")
+            self.DownloaFile()    
     def DownloaFile(self):
-        
+        print("Esperando descarga de archivo..")
         Issue_period_day = self.browser.find_element(By.ID, 'frmPrincipal:dia')
         select_day = Select(Issue_period_day)
         select_day.select_by_value("0")
@@ -114,7 +114,6 @@ class WebScrapingSRI:
         btnConsult.click()
         #CAPTCHA
         try:
-
             boxImg1 = self.browser.find_element(By.XPATH,"//td[@tabindex=9]")
             boxImg2 = self.browser.find_element(By.XPATH,"//td[@tabindex=10]")
             boxImg3 = self.browser.find_element(By.XPATH,"//td[@tabindex=13]")
@@ -129,7 +128,9 @@ class WebScrapingSRI:
         wait.click()
         self.LoginPageConnection = True
         print("Arhivo descargado")
-
+        #self.MoveFile()
+    def MoveFile(self):
+        subprocess.run(["mv",os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"],os.getcwd()+"/")
 
 WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
 
