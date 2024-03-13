@@ -154,9 +154,9 @@ class WebScrapingSRI:
     def ConvertBased64_Send(self,PathFile):
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
-        text_based = base64.b64encode(texto)
+        text_based = base64.b64decode(texto)
         data = {
-            "based64": "test"
+            "based64": text_based
         }
         
         response = requests.post(self.url_webhook, data=json.dumps(data), headers={'Content-Type': 'application/json'})
