@@ -127,9 +127,8 @@ class WebScrapingSRI:
         }
         response = requests.post(self.url_webhook, data=json.dumps(data), headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
-          pass
+          print(response.text)
         else:
            pass
-        
 
 WebScrapingSRI(args.RUC,args.CI,args.CLAVE)
