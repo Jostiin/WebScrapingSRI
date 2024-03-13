@@ -28,20 +28,19 @@ class WebScrapingSRI:
 
         self.LoginPageConnection = False
         self.DriverSelected()
-        self.LoginPage()
         #Conexion de SRI
         #Login
-        #while(self.LoginPageConnection  == False):
-        #    try:
-        #        self.ConnectionPage()
-        #        self.LoginPage()
-        #    except:
-        #        print("Error en la pagina: Esperar 3 minutos")
-        #        self.browser.close()
-        #        time.sleep(180)
-        #        pass
-        #self.browser.close()
-        #exit()
+        while(self.LoginPageConnection  == False):
+            try:
+                self.ConnectionPage()
+                self.LoginPage()
+            except:
+                print("Error en la pagina: Esperar 3 minutos")
+                self.browser.close()
+                time.sleep(180)
+                pass
+        self.browser.close()
+        exit()
     def DriverSelected(self):
     
         #try:
