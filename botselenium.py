@@ -39,7 +39,7 @@ class WebScrapingSRI:
                 print("Error en la pagina: Esperar 3 minutos")
                 print(e)
                 time.sleep(60)
-                
+                self.browser.close()
                 #180 = 3minutos
                 #300 = 5 minutos
                 pass
