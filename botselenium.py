@@ -49,9 +49,10 @@ class WebScrapingSRI:
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         #self.browser = webdriver.Chrome(options=chrome_options,executable_path = os.getcwd()+"/chromedriver.exe")
-        self.browser =  webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+        #self.browser =  webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         #self.browser = webdriver.Chrome(executable_path="/home/jostinorbe/google-chrome-stable_current_amd64.deb")
         #self.browser = webdriver.ChromeService(executable_path="/home/jostinorbe/google-chrome-stable_current_amd64.deb")
+        self.browser = webdriver.Firefox()
         #except:
 
         #    firefox_options = Options()
