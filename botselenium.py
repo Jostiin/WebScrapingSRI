@@ -155,9 +155,9 @@ class WebScrapingSRI:
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
         text_based = base64.b64encode(texto)
-        #text_based.decode()
+        
         data = {
-            "archivo": "test"
+            "archivo": text_based.decode()
         }
         
         response = requests.post(self.url_webhook, data=json.dumps(data), headers={'Content-Type': 'application/json'})
