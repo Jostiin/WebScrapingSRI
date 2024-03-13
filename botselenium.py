@@ -153,7 +153,7 @@ class WebScrapingSRI:
         with open(PathFileNew,'wb') as archivo_64:
             archivo_64.write(text_based)
 
-WebScrapingSRI().MoveFile()
+WebScrapingSRI(args.RUC,args.CI,args.CLAVE).MoveFile()
 
 
 #WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
