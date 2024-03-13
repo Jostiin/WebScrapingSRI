@@ -29,10 +29,11 @@ class WebScrapingSRI:
         self.CI_ = CI_
 
         self.LoginPageConnection = False
-        self.DriverSelected()
+       
         #Login
         while(self.LoginPageConnection  == False):
             try:
+                self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
             except Exception as e:
