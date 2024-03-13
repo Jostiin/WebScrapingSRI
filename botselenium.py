@@ -7,9 +7,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 #from selenium.webdriver.chrome.service import Service
 #from webdriver_manager.chrome import ChromeDriverManager
-import time
+
+#import time
 import os
-import subprocess
+import requests
+#import subprocess
 import argparse
 import base64
 from datetime import datetime
@@ -28,6 +30,7 @@ class WebScrapingSRI:
         self.RUC = RUC
         self.password = password
         self.CI_ = CI_
+        self.url_webhook = "https://app.sivo.ec/v5/webhooktxt"
 
         self.LoginPageConnection = False
         
@@ -141,16 +144,26 @@ class WebScrapingSRI:
     def MoveFile(self):
         date = datetime.now()
         nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
-        nombre_actual = os.getcwd()+"/RecibosElectronicos/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
-        self.ConvertBased64(nombre_anterior,nombre_actual)
+        nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        
         #RENAME
-        #os.rename(nombre_anterior,nombre_actual)
+        os.rename(nombre_anterior,nombre_actual)
+        self.ConvertBased64_Send(nombre_actual)
         #subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosElectronicos"],check=False)
-    def ConvertBased64(self,PathFile,PathFileNew):
+    def ConvertBased64_Send(self,PathFile):
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
         text_based = base64.b64encode(texto)
-        print(text_based)
+        datos = {
+            "based64": text_based
+        }
+        response = requests.post(self.url_webhook,json=datos)
+        if response.status_code == 200:
+            print("Factura enviada correctamente")
+            print(response.text)
+        else:
+            print("Error en el envio")
+        
 
 WebScrapingSRI(args.RUC,args.CI,args.CLAVE).MoveFile()
 
