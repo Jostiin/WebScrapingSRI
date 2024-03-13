@@ -130,7 +130,7 @@ class WebScrapingSRI:
         print("Arhivo descargado")
         #self.MoveFile()
     def MoveFile(self):
-        subprocess.run(["mv",os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"],os.getcwd()+"/")
+        subprocess.run(["mv",os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt",os.getcwd()+"/"],check=False)
 
 WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
 
