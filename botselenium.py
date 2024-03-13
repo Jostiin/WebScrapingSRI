@@ -53,7 +53,7 @@ class WebScrapingSRI:
 
        # chrome_options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36')
 
-        self.browser = webdriver.Firefox(options = chrome_options,executable_path='/usr/local/bin/geckodriver')
+        self.browser = webdriver.Firefox(options = chrome_options, executable_path='/usr/local/bin/geckodriver')
         #except:
 
         #    firefox_options = Options()
