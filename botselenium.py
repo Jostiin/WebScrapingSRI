@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import Select
 #import time
 import os
 import requests
+import json
 #import subprocess
 import argparse
 import base64
@@ -157,7 +158,8 @@ class WebScrapingSRI:
         datos = {
             "based64": text_based
         }
-        response = requests.post(self.url_webhook,json=datos)
+        
+        response = requests.post(self.url_webhook,json=json.dumps(datos))
         if response.status_code == 200:
             print("Factura enviada correctamente")
             print(response.text)
