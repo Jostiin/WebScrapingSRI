@@ -36,10 +36,10 @@ class WebScrapingSRI:
                 self.LoginPage()
             except:
                 print("Error en la pagina: Esperar 3 minutos")
-                self.browser.quit()
+                self.browser.close()
                 time.sleep(180)
                 pass
-        self.browser.quit()
+        self.browser.close()
         exit()
     def DriverSelected(self):
     
@@ -64,7 +64,7 @@ class WebScrapingSRI:
 
         except:
             print("Error en la conexion")
-            self.browser.quit()
+            self.browser.close()
             exit()
     def LoginPage(self):
         #LOG
@@ -102,7 +102,7 @@ class WebScrapingSRI:
             AlertError = WebDriverWait(self.browser,10).until(EC.presence_of_element_located((By.CLASS_NAME,"alert-error")))
             if(AlertError):
                 print("log/dev: Error de sesion: Datos incorrectos")
-                self.browser.quit()
+                self.browser.close()
                 exit()
             else:
                 pass
