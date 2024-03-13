@@ -45,7 +45,7 @@ class WebScrapingSRI:
                 #180 = 3minutos
                 #300 = 5 minutos
                 pass
-        self.browser.close()
+        self.browser.quit()
         exit()
     def DriverSelected(self):
     
@@ -64,7 +64,7 @@ class WebScrapingSRI:
 
         except:
             print("Error en la conexion")
-            self.browser.close()
+            self.browser.quit()
             exit()
     def LoginPage(self):
         #LOG
@@ -102,7 +102,7 @@ class WebScrapingSRI:
             AlertError = WebDriverWait(self.browser,10).until(EC.presence_of_element_located((By.CLASS_NAME,"alert-error")))
             if(AlertError):
                 print("log/dev: Error de sesion: Datos incorrectos")
-                self.browser.close()
+                self.browser.quit()
                 exit()
             else:
                 pass
@@ -140,7 +140,7 @@ class WebScrapingSRI:
         nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
         #RENAME
         os.rename(nombre_anterior,nombre_actual)
-        subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosEletronicos"],check=False)
+        subprocess.run(["mv",nombre_actual,os.getcwd()+"/RecibosElectronicos"],check=False)
 
 WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
 
