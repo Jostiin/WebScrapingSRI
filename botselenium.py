@@ -158,9 +158,7 @@ class WebScrapingSRI:
         datos = {
             "based64": text_based
         }
-        with open("datos.json",'w') as archivo:
-            json.dump(datos,archivo)
-        response = requests.post(self.url_webhook,json=archivo)
+        response = requests.post(self.url_webhook,data=json.dumps(datos), headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
             print("Factura enviada correctamente")
             print(response.text)
