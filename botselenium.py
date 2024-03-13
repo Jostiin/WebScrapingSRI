@@ -45,7 +45,9 @@ class WebScrapingSRI:
     
         #try:
         chrome_options = Options()
+        chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-dev-shm-usage")
         #self.browser = webdriver.Chrome(options=chrome_options,executable_path = os.getcwd()+"/chromedriver.exe")
         self.browser =  webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         #except:
