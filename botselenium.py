@@ -28,7 +28,6 @@ class WebScrapingSRI:
 
         self.LoginPageConnection = False
         self.DriverSelected()
-        #Conexion de SRI
         #Login
         while(self.LoginPageConnection  == False):
             try:
@@ -43,15 +42,6 @@ class WebScrapingSRI:
         exit()
     def DriverSelected(self):
     
-        #try:
-        #chrome_options = Options()
-        #chrome_options.headless = True 
-        #chrome_options.port = 4444  
-        #chrome_options.add_argument("--no-sandbox")
-        #chrome_options.add_argument("--headless=new")
-        #chrome_options.add_argument("--disable-dev-shm-usage")
-
-      
         #1
         options = Options()
         options.page_load_strategy = 'eager'
@@ -60,15 +50,6 @@ class WebScrapingSRI:
         #options.add_argument('--no-sandbox')
         self.browser = webdriver.Chrome(options=options)
 
-
-
-        #self.browser = webdriver.Firefox()
-        #self.browser = webdriver.Firefox(options = chrome_options,executable_path='/usr/local/bin/geckodriver')
-        #except:
-
-        #    firefox_options = Options()
-        #    firefox_options.add_argument("--headless")
-        #    self.browser = webdriver.Firefox(options=firefox_options)
     def ConnectionPage(self):
        
         #Condicional de conexion a pagina
@@ -124,7 +105,7 @@ class WebScrapingSRI:
 
         
     def DownloaFile(self):
-        print("Descargando..")
+        
         Issue_period_day = self.browser.find_element(By.ID, 'frmPrincipal:dia')
         select_day = Select(Issue_period_day)
         select_day.select_by_value("0")
@@ -147,6 +128,7 @@ class WebScrapingSRI:
         wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
         wait.click()
         self.LoginPageConnection = True
+        print("Arhivo descargado")
 
 
 WebScrapingSRI( args.RUC,args.CI,args.CLAVE)
