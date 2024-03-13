@@ -57,7 +57,7 @@ class WebScrapingSRI:
         #self.browser =  webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         #self.browser = webdriver.Chrome(executable_path="/home/jostinorbe/google-chrome-stable_current_amd64.deb")
         #self.browser = webdriver.ChromeService(executable_path="/home/jostinorbe/google-chrome-stable_current_amd64.deb")
-        self.browser = webdriver.Firefox(options = chrome_options,executable_path='/usr/local/bin/geckodriver')
+        self.browser = webdriver.Firefox(options = chrome_options)
         #except:
 
         #    firefox_options = Options()
