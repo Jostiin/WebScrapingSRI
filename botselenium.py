@@ -141,7 +141,7 @@ class WebScrapingSRI:
     def MoveFile(self):
         date = datetime.now()
         nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
-        nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        nombre_actual = os.getcwd()+"/RecibosElectronicos/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
         self.ConvertBased64(nombre_anterior,nombre_actual)
         #RENAME
         #os.rename(nombre_anterior,nombre_actual)
@@ -150,8 +150,7 @@ class WebScrapingSRI:
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
         text_based = base64.b64encode(texto)
-        with open(PathFileNew,'wb') as archivo_64:
-            archivo_64.write(text_based)
+        print(text_based)
 
 WebScrapingSRI(args.RUC,args.CI,args.CLAVE).MoveFile()
 
