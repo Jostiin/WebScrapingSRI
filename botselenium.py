@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
 import argparse
@@ -44,24 +44,16 @@ class WebScrapingSRI:
     def DriverSelected(self):
     
         #try:
-        #chrome_options = Options()
-        
-        #chrome_options.headless = True 
-        
-        #chrome_options.port = 4444  
-        #chrome_options.add_argument("--no-sandbox")
-        #chrome_options.add_argument("--headless=new")
-        #chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options = Options()
+        chrome_options.headless = True 
+        chrome_options.port = 4444  
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--headless=new")
+        chrome_options.add_argument("--disable-dev-shm-usage")
 
        # chrome_options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36')
 
-        #self.browser = webdriver.Firefox(){
-        
-        
-        
-        self.browser = webdriver.Firefox(executable_path=GeckoDriverManager().install())
-        
-        
+        self.browser = webdriver.Firefox(options = chrome_options,executable_path='/usr/local/bin/geckodriver')
         #except:
 
         #    firefox_options = Options()
