@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from fastapi import FastAPI
 #from selenium.common.exceptions import ElementClickInterceptedException,ElementNotInteractableException
 
 import os
@@ -16,6 +17,9 @@ import argparse
 import base64
 from datetime import datetime
 
+
+app = FastAPI()
+'''
 parser = argparse.ArgumentParser(description="Scraping SRI")
 
 parser.add_argument('RUC', help='RUC')
@@ -23,15 +27,16 @@ parser.add_argument('CI', help='RUC')
 parser.add_argument('CLAVE', help='RUC')
 
 args = parser.parse_args()
+'''
 
 class WebScrapingSRI:
-    def __init__(self,RUC,CI_,password):
+    def __init__(self,RUC,CI_,password,url):
         
         self.RUC = RUC
         self.password = password
         self.CI_ = CI_
-        self.url_webhook = "https://app.sivo.ec/v5/webhooktxt"
-
+        self.url_webhook = url
+        #"https://app.sivo.ec/v5/webhooktxt"
         self.LoginPageConnection = False
         while(self.LoginPageConnection  == False):
             try:
@@ -152,7 +157,16 @@ class WebScrapingSRI:
           print(response.text)
         else:
            print("Error al enviar el archivo: "+str(response.status_code))
-           pass
+           
         os.remove(self.nombre_actual) 
 
-WebScrapingSRI(args.RUC,args.CI,args.CLAVE)
+@app.get("/")
+def index():
+    return{"message":"api funcionando"}
+
+@app.get("/scraping/")
+def Scraping(RUC,CI,CLAVE,URL):
+    WebScrapingSRI(RUC,CI,CLAVE,URL)
+    return{"status":"Ejecutado","RUC":RUC,"CI":CI,"CLAVE":CLAVE,"URL":URL}
+
+#
