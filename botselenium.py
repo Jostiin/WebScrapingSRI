@@ -129,7 +129,7 @@ class WebScrapingSRI:
         except:
             pass
         self.ConvertBased64_Send(nombre_actual)
-        #os.remove(nombre_actual) 
+        os.remove(nombre_actual) 
     def ConvertBased64_Send(self,PathFile):
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
@@ -139,8 +139,10 @@ class WebScrapingSRI:
         }
         response = requests.post(self.url_webhook, data=json.dumps(data), headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
+          print("Archivo enviado correctamente")
           print(response.text)
         else:
+           print("Error al enviar el archivo")
            pass
 
 WebScrapingSRI(args.RUC,args.CI,args.CLAVE)
