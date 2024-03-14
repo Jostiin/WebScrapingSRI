@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.action_chains import ActionChains
 
 import os
 import requests
@@ -51,6 +52,7 @@ class WebScrapingSRI:
         options.add_argument('--disable-gpu')
         options.add_argument('user-agent=Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')
         self.browser = webdriver.Chrome(options=options)
+        self.actions = ActionChains(self.browser)
     def ConnectionPage(self):
         try: 
             self.browser.get('https://srienlinea.sri.gob.ec/sri-en-linea/inicio/NAT') 
@@ -61,9 +63,11 @@ class WebScrapingSRI:
         self.browser.implicitly_wait(30)
         #FacturasElectronicasElement = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CLASS_NAME,"ui-panelmenu-header-link")))
         FacturasElectronicasElement = self.browser.find_elements(By.CLASS_NAME,"ui-panelmenu-header-link")
+        self.actions.move_to_element(FacturasElectronicasElement).perform()
         FacturasElectronicasElement[4].click()
 
         ComprobantesElectronicosElement = self.browser.find_element(By.XPATH,"//a[@href='https://srienlinea.sri.gob.ec/tuportal-internet/accederAplicacion.jspa?redireccion=57&idGrupo=55']")
+        self.actions.move_to_element(ComprobantesElectronicosElement).perform()
         ComprobantesElectronicosElement.click()
 
         USER = self.browser.find_element(By.ID,'usuario')
@@ -110,6 +114,7 @@ class WebScrapingSRI:
         #Descargar facturas
         #self.browser.implicitly_wait(10)
         wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
+        self.actions.move_to_element(wait).perform()
         wait.click()
         print("Archivo descargado")
         self.LoginPageConnection = True
