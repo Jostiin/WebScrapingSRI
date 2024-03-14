@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
+#from selenium.common.exceptions import ElementClickInterceptedException,ElementNotInteractableException
 
 import os
 import requests
@@ -37,11 +38,11 @@ class WebScrapingSRI:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except Exception as e:
-                print(e)
+            except:
+                
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
-                time.sleep(5)
+                time.sleep(300)
                 pass
         self.browser.quit()
         exit()  
