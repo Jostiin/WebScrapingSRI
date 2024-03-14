@@ -117,7 +117,7 @@ class WebScrapingSRI:
         except:
             pass
         #Descargar facturas
-        self.browser.implicitly_wait(10)
+        self.browser.implicitly_wait(20)
         wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
         self.actions.move_to_element(wait).perform()
         wait.click()
