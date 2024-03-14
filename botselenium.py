@@ -38,8 +38,7 @@ class WebScrapingSRI:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except Exception as e:
-                print(e)
+            except:
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
                 time.sleep(300)
@@ -117,7 +116,7 @@ class WebScrapingSRI:
         except:
             pass
         #Descargar facturas
-        
+        self.browser.implicitly_wait(10)
         wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
         self.actions.move_to_element(wait).perform()
         wait.click()
