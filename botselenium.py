@@ -38,7 +38,8 @@ class WebScrapingSRI:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except:
+            except Exception as e:
+                print(e)
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
                 time.sleep(300)
@@ -64,13 +65,13 @@ class WebScrapingSRI:
     def LoginPage(self):
         print("Registrandose")
         self.browser.implicitly_wait(30)
-        #FacturasElectronicasElement = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CLASS_NAME,"ui-panelmenu-header-link")))
+       
         FacturasElectronicasElement = self.browser.find_elements(By.CLASS_NAME,"ui-panelmenu-header-link")
-        #self.actions.move_to_element(FacturasElectronicasElement[4]).perform()
+      
         FacturasElectronicasElement[4].click()
 
         ComprobantesElectronicosElement = self.browser.find_element(By.XPATH,"//a[@href='https://srienlinea.sri.gob.ec/tuportal-internet/accederAplicacion.jspa?redireccion=57&idGrupo=55']")
-        #self.actions.move_to_element(ComprobantesElectronicosElement).perform()
+        
         ComprobantesElectronicosElement.click()
 
         USER = self.browser.find_element(By.ID,'usuario')
@@ -116,11 +117,11 @@ class WebScrapingSRI:
         except:
             pass
         #Descargar facturas
-        #self.browser.implicitly_wait(10)
+        
         wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
         self.actions.move_to_element(wait).perform()
         wait.click()
-        print("Archivo descargado")
+        
         self.LoginPageConnection = True
         self.MoveFile()
     def MoveFile(self):
@@ -135,6 +136,7 @@ class WebScrapingSRI:
         self.ConvertBased64_Send(nombre_actual)
         os.remove(nombre_actual) 
     def ConvertBased64_Send(self,PathFile):
+        print("Archivo descargado")
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
         text_based = base64.b64encode(texto)
