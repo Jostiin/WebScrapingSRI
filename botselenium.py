@@ -38,7 +38,7 @@ class WebScrapingSRI:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except:
+            except Exception as e:
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
                 time.sleep(300)
@@ -144,6 +144,7 @@ class WebScrapingSRI:
         }
         response = requests.post(self.url_webhook, data=json.dumps(data), headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
+          self.LoginPageConnection = True
           print("Archivo enviado correctamente")
           print(response.text)
         else:
