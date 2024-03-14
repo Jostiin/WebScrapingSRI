@@ -47,8 +47,8 @@ class WebScrapingSRI:
         self.browser.quit()
         exit()  
     def DriverSelected(self):
-        ua = UserAgent(browsers=['chrome'])
-        randomAgent = ua.random
+        #ua = UserAgent(browsers=['chrome'])
+        #randomAgent = ua.random
         options = Options()
         options.page_load_strategy = 'eager'
         options.add_argument('--headless=new')
