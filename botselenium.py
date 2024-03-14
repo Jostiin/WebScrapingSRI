@@ -123,6 +123,7 @@ class WebScrapingSRI:
         wait.click()
         
         self.LoginPageConnection = True
+        time.sleep(5)
         self.MoveFile()
     def MoveFile(self):
         date = datetime.now()
@@ -148,7 +149,7 @@ class WebScrapingSRI:
           print("Archivo enviado correctamente")
           print(response.text)
         else:
-           print("Error al enviar el archivo"+response.status_code)
+           print("Error al enviar el archivo: "+str(response.status_code))
            pass
         os.remove(self.nombre_actual) 
 
