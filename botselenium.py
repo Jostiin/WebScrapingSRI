@@ -39,6 +39,7 @@ class WebScrapingSRI:
                 self.ConnectionPage()
                 self.LoginPage()
             except Exception as e:
+                print(e)
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
                 time.sleep(300)
