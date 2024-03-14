@@ -36,7 +36,8 @@ class WebScrapingSRI:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except:
+            except Exception as e:
+                print(e)
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
                 time.sleep(5)
@@ -109,6 +110,7 @@ class WebScrapingSRI:
         #self.browser.implicitly_wait(10)
         wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
         wait.click()
+        print("Archivo descargado")
         self.LoginPageConnection = True
         self.MoveFile()
     def MoveFile(self):
