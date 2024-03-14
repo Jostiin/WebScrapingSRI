@@ -58,8 +58,9 @@ class WebScrapingSRI:
             pass   
     def LoginPage(self):
         print("Registrandose")
-        #self.browser.implicitly_wait(30)
-        FacturasElectronicasElement = self.browser.find_elements(By.CLASS_NAME,"ui-panelmenu-header-link")
+        self.browser.implicitly_wait(20)
+        FacturasElectronicasElement = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CLASS_NAME,"ui-panelmenu-header-link")))
+        #FacturasElectronicasElement = self.browser.find_elements(By.CLASS_NAME,"ui-panelmenu-header-link")
         FacturasElectronicasElement[4].click()
 
         ComprobantesElectronicosElement = self.browser.find_element(By.XPATH,"//a[@href='https://srienlinea.sri.gob.ec/tuportal-internet/accederAplicacion.jspa?redireccion=57&idGrupo=55']")
