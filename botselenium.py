@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from fake_useragent import UserAgent
+#from fake_useragent import UserAgent
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -53,8 +53,8 @@ class WebScrapingSRI:
         options.page_load_strategy = 'eager'
         options.add_argument('--headless=new')
         options.add_argument('--disable-gpu')
-        #options.add_argument('user-agent=Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')
-        options.add_argument(f'user-agent={randomAgent}')
+        options.add_argument('user-agent=Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')
+        #options.add_argument(f'user-agent={randomAgent}')
         self.browser = webdriver.Chrome(options=options)
         self.actions = ActionChains(self.browser)
     def ConnectionPage(self):
