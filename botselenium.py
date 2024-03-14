@@ -58,7 +58,7 @@ class WebScrapingSRI:
             pass   
     def LoginPage(self):
         print("Registrandose")
-        self.browser.implicitly_wait(20)
+        self.browser.implicitly_wait(30)
         #FacturasElectronicasElement = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CLASS_NAME,"ui-panelmenu-header-link")))
         FacturasElectronicasElement = self.browser.find_elements(By.CLASS_NAME,"ui-panelmenu-header-link")
         FacturasElectronicasElement[4].click()
