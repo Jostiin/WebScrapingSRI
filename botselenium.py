@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
+from fake_useragent import UserAgent
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -38,8 +38,7 @@ class WebScrapingSRI:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except Exception as e:
-                print(e)
+            except:
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
                 time.sleep(300)
@@ -47,11 +46,14 @@ class WebScrapingSRI:
         self.browser.quit()
         exit()  
     def DriverSelected(self):
+        ua = UserAgent(browsers=['chrome'])
+        randomAgent = ua.random
         options = Options()
         options.page_load_strategy = 'eager'
         options.add_argument('--headless=new')
         options.add_argument('--disable-gpu')
-        options.add_argument('user-agent=Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')
+        #options.add_argument('user-agent=Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')
+        options.add_argument(f'user-agent={randomAgent}')
         self.browser = webdriver.Chrome(options=options)
         self.actions = ActionChains(self.browser)
     def ConnectionPage(self):
@@ -76,12 +78,13 @@ class WebScrapingSRI:
         PASSWORD = self.browser.find_element(By.ID,'password')
 
         USER.send_keys(self.RUC)
+        self.browser.implicitly_wait(5)
         if self.CI_ != "0":
             CI.send_keys(self.CI_)
         else:
             pass
         PASSWORD.send_keys(self.password)
-
+        self.browser.implicitly_wait(2)
         btnSubmit = self.browser.find_element(By.ID,"kc-login")
         btnSubmit.submit()
         try: 
