@@ -38,8 +38,8 @@ class WebScrapingSRI:
                 self.DriverSelected()
                 self.ConnectionPage()
                 self.LoginPage()
-            except Exception as e:
-                print(e)
+            except:
+                
                 print("Error: Esperar 5 minutos")
                 self.browser.quit()
                 time.sleep(300)
@@ -129,14 +129,16 @@ class WebScrapingSRI:
         date = datetime.now()
         nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
         self.nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        try:
+            os.rename(nombre_anterior,self.nombre_actual)
+            self.ConvertBased64_Send(self.nombre_actual)
+        except:
+            pass
         
-        
-        os.rename(nombre_anterior,self.nombre_actual)
-       
-        self.ConvertBased64_Send(self.nombre_actual)
         
     def ConvertBased64_Send(self,PathFile):
         print("Archivo descargado")
+        
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
         text_based = base64.b64encode(texto)
