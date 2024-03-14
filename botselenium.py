@@ -63,11 +63,11 @@ class WebScrapingSRI:
         self.browser.implicitly_wait(30)
         #FacturasElectronicasElement = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CLASS_NAME,"ui-panelmenu-header-link")))
         FacturasElectronicasElement = self.browser.find_elements(By.CLASS_NAME,"ui-panelmenu-header-link")
-        self.actions.move_to_element(FacturasElectronicasElement[4]).perform()
+        #self.actions.move_to_element(FacturasElectronicasElement[4]).perform()
         FacturasElectronicasElement[4].click()
 
         ComprobantesElectronicosElement = self.browser.find_element(By.XPATH,"//a[@href='https://srienlinea.sri.gob.ec/tuportal-internet/accederAplicacion.jspa?redireccion=57&idGrupo=55']")
-        self.actions.move_to_element(ComprobantesElectronicosElement).perform()
+        #self.actions.move_to_element(ComprobantesElectronicosElement).perform()
         ComprobantesElectronicosElement.click()
 
         USER = self.browser.find_element(By.ID,'usuario')
