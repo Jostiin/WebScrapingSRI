@@ -56,7 +56,8 @@ class WebScrapingSRI:
         except:
             pass   
     def LoginPage(self):
-        self.browser.implicitly_wait(30)
+        print("Registrandose")
+        #self.browser.implicitly_wait(30)
         FacturasElectronicasElement = self.browser.find_elements(By.CLASS_NAME,"ui-panelmenu-header-link")
         FacturasElectronicasElement[4].click()
 
@@ -79,6 +80,7 @@ class WebScrapingSRI:
         try: 
             AlertError = WebDriverWait(self.browser,10).until(EC.presence_of_element_located((By.CLASS_NAME,"alert-error")))
             if(AlertError):
+                print("Datos incorrectos")
                 self.browser.quit()
                 exit()
             else:
@@ -86,6 +88,7 @@ class WebScrapingSRI:
         except:
             self.DownloaFile()    
     def DownloaFile(self):
+        print("Esperando descarga...")
         Issue_period_day = self.browser.find_element(By.ID, 'frmPrincipal:dia')
         select_day = Select(Issue_period_day)
         select_day.select_by_value("0")
@@ -103,7 +106,7 @@ class WebScrapingSRI:
         except:
             pass
         #Descargar facturas
-        self.browser.implicitly_wait(30)
+        #self.browser.implicitly_wait(10)
         wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
         wait.click()
         self.LoginPageConnection = True
@@ -112,12 +115,13 @@ class WebScrapingSRI:
         date = datetime.now()
         nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
         nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        
         try:
             os.rename(nombre_anterior,nombre_actual)
         except:
             pass
         self.ConvertBased64_Send(nombre_actual)
-        os.remove(nombre_actual) 
+        #os.remove(nombre_actual) 
     def ConvertBased64_Send(self,PathFile):
         with open(PathFile,'rb') as archivo:
             texto = archivo.read()
