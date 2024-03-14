@@ -149,7 +149,7 @@ class WebScrapingSRI:
           print("Archivo enviado correctamente")
           print(response.text)
         else:
-           print("Error al enviar el archivo")
+           print("Error al enviar el archivo"+response.status_code)
            pass
         os.remove(self.nombre_actual) 
 
