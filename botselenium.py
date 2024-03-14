@@ -129,10 +129,9 @@ class WebScrapingSRI:
         nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
         self.nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
         
-        try:
-            os.rename(nombre_anterior,self.nombre_actual)
-        except:
-            pass
+        
+        os.rename(nombre_anterior,self.nombre_actual)
+       
         self.ConvertBased64_Send(self.nombre_actual)
         
     def ConvertBased64_Send(self,PathFile):
