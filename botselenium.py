@@ -127,14 +127,14 @@ class WebScrapingSRI:
     def MoveFile(self):
         date = datetime.now()
         nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
-        nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
+        self.nombre_actual = os.path.expanduser("~")+"/Downloads/"+self.RUC+f"_{date.strftime('%d-%m-%Y')}_"+"Recibidos.txt"  #1791972066001_13/3/2024_Recibidos.txt
         
         try:
-            os.rename(nombre_anterior,nombre_actual)
+            os.rename(nombre_anterior,self.nombre_actual)
         except:
             pass
-        self.ConvertBased64_Send(nombre_actual)
-        os.remove(nombre_actual) 
+        self.ConvertBased64_Send(self.nombre_actual)
+        
     def ConvertBased64_Send(self,PathFile):
         print("Archivo descargado")
         with open(PathFile,'rb') as archivo:
@@ -151,5 +151,6 @@ class WebScrapingSRI:
         else:
            print("Error al enviar el archivo")
            pass
+        os.remove(self.nombre_actual) 
 
 WebScrapingSRI(args.RUC,args.CI,args.CLAVE)
