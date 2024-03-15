@@ -104,7 +104,7 @@ class WebScrapingSRI:
         except:
             self.DownloaFile()    
     def DownloaFile(self):
-        print("Esperando descarga...")
+        print("Esperando descargas...")
         Issue_period_day = self.browser.find_element(By.ID, 'frmPrincipal:dia')
         select_day = Select(Issue_period_day)
         select_day.select_by_value("0")
@@ -122,14 +122,16 @@ class WebScrapingSRI:
         except:
             pass
         #Descargar facturas
-        self.browser.implicitly_wait(20)
-        wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
-        self.actions.move_to_element(wait).perform()
-        wait.click()
-        
-        self.LoginPageConnection = True
+        #----------------------------------------------------------------------------------------------------------
+        #self.browser.implicitly_wait(20)
+        #wait = WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,"frmPrincipal:lnkTxtlistado")))
+        #self.actions.move_to_element(wait).perform()
+        #wait.click()grid
+        #----------------------------------------------------------------------------------------------------------
+
+        #----------------------------------------------------------------------------------------------------------
         time.sleep(5)
-        self.MoveFile()
+        #self.MoveFile()
     def MoveFile(self):
         date = datetime.now()
         nombre_anterior = os.path.expanduser("~")+"/Downloads/"+self.RUC+"_Recibidos.txt"  #1791972066001_Recibidos.txt
@@ -138,9 +140,7 @@ class WebScrapingSRI:
             os.rename(nombre_anterior,self.nombre_actual)
             self.ConvertBased64_Send(self.nombre_actual)
         except:
-            pass
-        
-        
+            pass    
     def ConvertBased64_Send(self,PathFile):
         print("Archivo descargado")
         
