@@ -1,0 +1,12 @@
+pip3 install selenium
+pip3 install webdriver-manager
+pip3 install argparse
+pip install fake-useragent
+python -m pip install mysql-connector-python
+
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt -f install
+sudo dpkg -i google-chrome-stable_current_amd64-deb
+
+
+//Test
