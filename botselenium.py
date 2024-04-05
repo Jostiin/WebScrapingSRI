@@ -14,6 +14,7 @@ import json
 import time
 import mysql.connector
 import smtplib
+from fake_useragent import UserAgent
 
 import base64
 from datetime import datetime
@@ -39,6 +40,7 @@ def SendEmailProcess(Company,subject,message):
     
     remitente = "orbejostin513@gmail.com"
     destinatario = "wespinosa86@gmail.com"
+   
     mensaje = f"{Company.upper()}\n\n{message}\n\nArchivo: TXT\nFecha: {date.strftime('%d/%m/%Y')}\nHora: {date.strftime('%H:%M %p')}" 
     email = EmailMessage()
     email["From"] = remitente
@@ -78,22 +80,27 @@ class WebScrapingSRI:
                 print("--------------------ERROR WAIT 5--------------------")
                 self.browser.quit()
                 time.sleep(300)
+                #///time.sleep(60)
                 pass
             except ElementClickInterceptedException:
                 print("Error en la descarga del archivo por posible recaptcha, volviendo a intentar en 5 minutos...")
                 print("--------------------ERROR WAIT 5--------------------")
                 self.browser.quit()
                 time.sleep(300)
+                #///time.sleep(60)
                 pass
-                
+            
             except Exception as e:
                 self.attempts = self.attempts + 1
-                print(e)
-                SendEmailProcessSecond(self.company_Name,"BOT SELENIUM ERROR",f"Error desconocido \nDetails: {e}")
+                print(">>>" + e)
+               
+                #SendEmailProcessSecond(self.company_Name,"BOT SELENIUM ERROR",f"Error desconocido \nDetails: {e}")
                 print("--------------------ERROR WAIT 5--------------------")
                 self.browser.quit()
                 time.sleep(300)
+                #///time.sleep(60)
                 pass
+            
         self.browser.quit()   
     def DriverSelected(self):
         print("DriverSelect")
@@ -101,8 +108,10 @@ class WebScrapingSRI:
         options.page_load_strategy = 'eager'
         options.add_argument('--headless=new')
         options.add_argument('--disable-gpu')
-        options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
-       
+        ua = UserAgent()
+        user_agent = ua.random
+        options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36')
+       #
         #options.add_argument(f'user-agent={randomAgent}')
         self.browser = webdriver.Chrome(options=options)
         self.actions = ActionChains(self.browser)
@@ -151,7 +160,7 @@ class WebScrapingSRI:
                
                 SendEmailProcess(self.company_Name,"Descarga SRI",f"Error en el registro: credenciales incorrectas.")
                 print("Error en el registro: credenciales incorrectas.")
-                SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en el registro: credenciales incorrectas.")
+                #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en el registro: credenciales incorrectas.")
                 self.browser.quit()
             else:
                 pass
@@ -178,19 +187,36 @@ class WebScrapingSRI:
             time.sleep(5)
             self.MoveFile(0)
         elif self.type_ == "xml":
-            Issue_period_day = self.browser.find_element(By.ID, 'frmPrincipal:dia')
-            select_day = Select(Issue_period_day)
-            select_day.select_by_value(str(datetime.now().day-1))
-            #Consultar facturass
-            btnConsult = self.browser.find_element(By.ID,"btnRecaptcha")
-            btnConsult.click()
+                print("self.type xml")
+                time.sleep(2)
+                Issue_period_day = self.browser.find_element(By.ID, 'frmPrincipal:dia')
+                select_day = Select(Issue_period_day)
+                select_day.select_by_value(str(datetime.now().day-1))
+                
+                #Consultar facturass
+                time.sleep(2)
+                btnConsult = self.browser.find_element(By.ID,"btnRecaptcha")
+                self.actions.move_to_element(btnConsult).perform()
+                time.sleep(1)
+                btnConsult.click()
+                print("btnrecaptcha")
             #Descargar facturas XML
-            try:
+            #try:
+                print("implicity")
                 self.browser.implicitly_wait(20)
+                print("find element")
+                
                 TablaRecibidos = self.browser.find_element(By.ID,"frmPrincipal:tablaCompRecibidos_data")
+                
+                print("rows find")
                 rows = TablaRecibidos.find_elements(By.TAG_NAME, "tr")
+                print("len rows")
                 rows_count = len(rows)
+                print(rows_count)
+                
+                print("try")
                 try:
+                    print("for")
                     for i in range(0,rows_count):
                         self.browser.implicitly_wait(5)
                         fileXML =  WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID,f"frmPrincipal:tablaCompRecibidos:{i}:lnkXml")))
@@ -205,31 +231,33 @@ class WebScrapingSRI:
                             "company_id":self.id_company
                         }
                         response = requests.post(self.url_webhook, data=json.dumps(data), headers={'Content-Type': 'application/json'})
-                        #print(json.dumps(data))
+                        print(json.dumps(data))
                         if response.status_code == 200:
                             self.LoginPageConnection = True
-                            SendEmailProcess(self.company_Name,"Descarga SRI",f"Archivo {self.type_} finalizado con exito")
-                            SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Archivo {self.type_} finalizado con exito")
+                            SendEmailProcess(self.company_Name,"Descarga SRI",f"Archivo {self.type_} finalizado con exito ")
+                            #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Archivo {self.type_} finalizado con exito")
                         else:
                             SendEmailProcess(self.company_Name,"Descarga SRI",f"Error al enviar el archivo {self.type_} : codigo {str(response.status_code)}")
-                            SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error al enviar el archivo {self.type_} : codigo {str(response.status_code)}")
+                            #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error al enviar el archivo {self.type_} : codigo {str(response.status_code)}")
                     except requests.exceptions.ConnectionError:
                         SendEmailProcess(self.company_Name,"Descarga SRI",f"Error en la conexion del webhook. Programa finalizado")
-                        SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en la conexion del webhook. Programa finalizado")
+                        #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en la conexion del webhook. Programa finalizado")
                         self.LoginPageConnection = True
                 except:
                     print("Error en la descarga de los archivos {self.type_}, volviendo intentar en 5 minutos...")
                     self.attempts = self.attempts+1
                     self.LoginPageConnection = True
-            except:
-                SendEmailProcess(self.company_Name,"Descarga SRI",f"No existen archivos descargables para el dia {date.day()-1}")
-                SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"No existen archivos descargables para el dia {date.day()-1}")
+            
+            #except:
+                
+            #    SendEmailProcess(self.company_Name,"Descarga SRI",f"No existen archivos descargables")
+                #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"No existen archivos descargables para el dia {date.day()-1}")
                 self.LoginPageConnection = True
 
-            self.LoginPageConnection = True 
+                self.LoginPageConnection = True 
         else:
             SendEmailProcess(self.company_Name,"Descarga SRI",f"Error en el archivo: Verifique el tipo de arhivo (TXT,XML)")
-            SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en el archivo: Verifique el tipo de arhivo (TXT,XML)")
+            #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en el archivo: Verifique el tipo de arhivo (TXT,XML)")
             self.LoginPageConnection = True      
     def MoveFile(self,i):
         print("MoveFile")
@@ -242,7 +270,7 @@ class WebScrapingSRI:
                 self.ConvertBased64_Send(self.nombre_actual,i)
             except Exception as ee:
                 SendEmailProcess(self.company_Name,"Descarga SRI",f"Error en la descarga del archivo. Volviendo a intentar dentro de 5 minutos...")
-                SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en la descarga del archivo.  Volviendo a intentar dentro de 5 minutos... \nDetails: {ee}")
+                #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en la descarga del archivo.  Volviendo a intentar dentro de 5 minutos... \nDetails: {ee}")
                 
                 pass
         elif self.type_ == "xml":
@@ -251,7 +279,7 @@ class WebScrapingSRI:
                 self.ConvertBased64_Send(self.nombre_actual,i)
             except Exception as ee:
                 SendEmailProcess(self.company_Name,"Descarga SRI",f"Error en la descarga del archivo \nDetails: {ee}")
-                SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en la descarga del archivo \nDetails: {ee}")
+                #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en la descarga del archivo \nDetails: {ee}")
     def ConvertBased64_Send(self,PathFile,i):
         print("ConvertBased64")
         #print(f"Archivo {self.type_} descargado")
@@ -266,14 +294,15 @@ class WebScrapingSRI:
                 "company_id":self.id_company
             }
             response = requests.post(self.url_webhook, data=json.dumps(data), headers={'Content-Type': 'application/json'})
-            #print(json.dumps(data))
+            
             if response.status_code == 200:
+                print(response.text)
                 self.LoginPageConnection = True
                 SendEmailProcess(self.company_Name,"Descarga SRI",f"Archivo {self.type_} finalizado con exito")
-                SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Archivo {self.type_} finalizado con exito")
+                #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Archivo {self.type_} finalizado con exito")
             else:
                 SendEmailProcess(self.company_Name,"Descarga SRI",f"Error al enviar el archivo {self.type_} : codigo {str(response.status_code)}")
-                SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error al enviar el archivo {self.type_} : codigo {str(response.status_code)}")
+                #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error al enviar el archivo {self.type_} : codigo {str(response.status_code)}")
                 self.LoginPageConnection = True
             os.remove(self.nombre_actual) 
         elif self.type_ == "xml":
@@ -293,7 +322,7 @@ class WebScrapingSRI:
             time.sleep(3)
         else:
             SendEmailProcess(self.company_Name,"Descarga SRI",f"Error en el archivo: Verifique el tipo de arhivo (TXT,XML)")
-            SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en el archivo: Verifique el tipo de arhivo (TXT,XML)")
+            #SendEmailProcessSecond(self.company_Name,"Descarga SRI",f"Error en el archivo: Verifique el tipo de arhivo (TXT,XML)")
 class DBMysql():
     def __init__(self):
         try: 
@@ -305,7 +334,8 @@ class DBMysql():
             )
             if self.mydb.is_connected():
                 self.SelectDB()   
-        except:
+        except Exception as e:
+            print(e)
             print("Error en el conexion con la base de datos")
             pass
     def SelectDB(self):
@@ -324,10 +354,10 @@ class DBMysql():
         for x in myresult:
             if x[8] == "A":
                 
-                SendEmailProcess(x[3],"Descarga SRI",f"Se ha iniciado la descarga de archivos [{CountNumberBD}/{myresultCount}]")
-                SendEmailProcessSecond(x[3],"Descarga SRI",f"Se ha iniciado la descarga de archivos [{CountNumberBD}/{myresultCount}]")
+                #SendEmailProcess(x[3],"Descarga SRI",f"Se ha iniciado la descarga de archivos [{CountNumberBD}/{myresultCount}]")
+                #SendEmailProcessSecond(x[3],"Descarga SRI",f"Se ha iniciado la descarga de archivos [{CountNumberBD}/{myresultCount}]")
                 print(f"{CountNumberBD}/{myresultCount}")
-                WebScrapingSRI(x[1],x[2],x[4],x[5],x[7],x[6],x[3])
+                WebScrapingSRI(x[1],x[2],x[4],x[5],x[7],x[6],x[3],)
             
                 CountNumberBD = CountNumberBD+1
             else:
